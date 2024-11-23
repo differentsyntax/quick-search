@@ -16,5 +16,6 @@ UI/UX:
 4. Display the results in a clean, readable format (e.g., table or card layout).
 Show a message like "No results found" if the search or filter yields no matches.
 
+<img width="624" alt="Screenshot 2024-11-22 at 6 52 27 PM" src="https://github.com/user-attachments/assets/f6bc39a3-a703-4ecc-8fb1-d4d141019462">
 
-<img width="618" alt="Screenshot 2024-11-22 at 6 30 30 PM" src="https://github.com/user-attachments/assets/3b8736ed-9c29-4815-87c8-a43eac4016b1">
+
