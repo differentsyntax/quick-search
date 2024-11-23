@@ -1,0 +1,13 @@
+.searchBarAndListContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.searchBarContainer {
+  margin-bottom: 5px;
+  padding: 5px;
+  margin: auto;
+}
