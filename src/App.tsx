@@ -12,7 +12,8 @@ type User = {
 function App() {
   const [currSearchVal, setCurrSearchVal] = useState<string>("");
   const [displayList, setDisplayList] = useState<User[]>(users);
-  const [roleType, setRoleType] = useState<string>("User");
+  const [roleType, setRoleType] = useState<string>("");
+  const [debouncedValue, setDebouncedValue] = useState<string>("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCurrSearchVal(e.target.value);
@@ -22,29 +23,43 @@ function App() {
     setDisplayList(
       users
         .filter((item) =>
-          item.name.toLowerCase().includes(currSearchVal.toLowerCase())
+          item.name.toLowerCase().includes(debouncedValue.toLowerCase())
         )
-        .filter((item) => item.role === roleType)
+        .filter((item) => (roleType.length ? item.role === roleType : 1 === 1))
     );
-  }, [currSearchVal, roleType]);
+  }, [debouncedValue, roleType]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(currSearchVal);
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [currSearchVal]);
 
   return (
     <div className="searchBarAndListContainer">
       <div className="searchBarContainer">
         <input value={currSearchVal} onChange={handleChange} />
 
-        <select
-          value={roleType}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            setRoleType(e.target.value)
-          }
-        >
-          <option value={`Admin`}>{`Admin`}</option>
-          <option value={`User`}>{`User`}</option>
-          <option value={`Moderator`}>{`Moderator`}</option>
-        </select>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <label htmlFor="roleSelect">{`Role:`}</label>
+          <select
+            value={roleType}
+            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+              setRoleType(e.target.value)
+            }
+          >
+            <option value={``}>{`Any`}</option>
+            <option value={`Admin`}>{`Admin`}</option>
+            <option value={`User`}>{`User`}</option>
+            <option value={`Moderator`}>{`Moderator`}</option>
+          </select>
+        </div>
 
-        {displayList ? (
+        {displayList.length ? (
           <ul>
             {displayList.map((item, index) => (
               <li key={index}>
@@ -54,7 +69,7 @@ function App() {
             ))}
           </ul>
         ) : (
-          <div>{`No results found!`}</div>
+          <h2>{`No results found!`}</h2>
         )}
       </div>
     </div>
