@@ -19,25 +19,13 @@ function App() {
   };
 
   useEffect(() => {
-    const stringFilters: Array<keyof Pick<User, "name" | "role" | "email">> = [
-      "name",
-      "role",
-      "email",
-    ];
-
-    if (
-      stringFilters.includes(
-        filterType as keyof Pick<User, "name" | "role" | "email">
+    setDisplayList(
+      users.filter((item) =>
+        item[filterType as keyof Pick<User, "name" | "role" | "email">]
+          .toLowerCase()
+          .includes(currSearchVal.toLowerCase())
       )
-    ) {
-      setDisplayList(
-        users.filter((item) =>
-          item[filterType as keyof Pick<User, "name" | "role" | "email">]
-            .toLowerCase()
-            .includes(currSearchVal.toLowerCase())
-        )
-      );
-    }
+    );
   }, [currSearchVal, filterType]);
 
   return (
