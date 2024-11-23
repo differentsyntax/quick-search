@@ -11,8 +11,8 @@ type User = {
 
 function App() {
   const [currSearchVal, setCurrSearchVal] = useState<string>("");
-  const [displayList, setDisplayList] = useState<User[]>([]);
-  const [filterType, setFilterType] = useState<string>("name");
+  const [displayList, setDisplayList] = useState<User[]>(users);
+  const [roleType, setRoleType] = useState<string>("User");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCurrSearchVal(e.target.value);
@@ -20,36 +20,36 @@ function App() {
 
   useEffect(() => {
     setDisplayList(
-      users.filter((item) =>
-        item[filterType as keyof Pick<User, "name" | "role" | "email">]
-          .toLowerCase()
-          .includes(currSearchVal.toLowerCase())
-      )
+      users
+        .filter((item) =>
+          item.name.toLowerCase().includes(currSearchVal.toLowerCase())
+        )
+        .filter((item) => item.role === roleType)
     );
-  }, [currSearchVal, filterType]);
+  }, [currSearchVal, roleType]);
 
   return (
     <div className="searchBarAndListContainer">
       <div className="searchBarContainer">
         <input value={currSearchVal} onChange={handleChange} />
+
         <select
-          value={filterType}
+          value={roleType}
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            setFilterType(e.target.value)
+            setRoleType(e.target.value)
           }
         >
-          <option value={`name`}>{`Name`}</option>
-          <option value={`email`}>{`Email`}</option>
-          <option value={`role`}>{`Role`}</option>
+          <option value={`Admin`}>{`Admin`}</option>
+          <option value={`User`}>{`User`}</option>
+          <option value={`Moderator`}>{`Moderator`}</option>
         </select>
+
         {displayList ? (
           <ul>
             {displayList.map((item, index) => (
               <li key={index}>
                 <span>{`${item.name}`}</span>
-                <span className="filter-category">
-                  {filterType !== "name" ? item[filterType as keyof User] : ""}
-                </span>
+                <span className="email">{`${item.email}`}</span>
               </li>
             ))}
           </ul>
